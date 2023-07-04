@@ -2,28 +2,41 @@ from glob import glob
 
 import pandas as pd
 import plotly.express as px
-from dash import Input, Output, callback
+from dash import Input, Output
+from flask_caching import Cache
 
 from nginx_dashboard.parser import parse_log
 from nginx_dashboard.preprocessing import preprocess
 
-outputs = [
-    Output("total-requests", "children"),
-    Output("valid-requests", "children"),
-    Output("failed-requests", "children"),
-    Output("unique-visitors", "children"),
-    Output("referrers", "children"),
-    Output("not-found", "children"),
-    Output("graph-1", "figure"),
-    Output("graph-2", "figure"),
-]
 
-inputs = [
-    Input("date-range", "value"),
-]
+def register_callbacks(app, cache_timeout=900):
+    outputs = [
+        Output("total-requests", "children"),
+        Output("valid-requests", "children"),
+        Output("failed-requests", "children"),
+        Output("unique-visitors", "children"),
+        Output("referrers", "children"),
+        Output("not-found", "children"),
+        Output("graph-1", "figure"),
+        Output("graph-2", "figure"),
+    ]
+
+    inputs = [
+        Input("date-range", "value"),
+    ]
+
+    cache = Cache(
+        app.server,
+        config={
+            "CACHE_TYPE": "filesystem",
+            "CACHE_DIR": "cache_dir",
+        },
+    )
+
+    cached_update_dashboard = cache.memoize(timeout=cache_timeout)(update_dashboard)
+    app.callback(outputs, inputs)(cached_update_dashboard)
 
 
-@callback(outputs, inputs)
 def update_dashboard(n_days):
     df = get_dataframe(n_days)
 

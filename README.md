@@ -17,4 +17,3 @@ python app.py
 ## Limitations
 
 - Currently only support for the default NGINX log format.
-- No caching implemented: parses the logfiles on every update.

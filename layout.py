@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 import dash_bootstrap_components as dbc
 from dash import dcc, html
 
@@ -6,9 +8,9 @@ def get_layout():
     return dbc.Container(
         [
             get_selector(),
-            get_header("Title of my Dash App"),
+            get_header("NGINX Dashboard"),
             html.Hr(),
-            get_cards(),
+            *get_cards(),
             html.Br(),
             get_graphs(),
         ]
@@ -40,36 +42,35 @@ def get_header(title):
 
 
 def get_cards():
-    card_1 = dbc.Card(
-        [
-            html.H4("", className="card-title", id="bad-requests"),
-            html.P("Fraction of bad requests", className="card-text"),
-        ],
-        body=True,
-        color="light",
-    )
+    CardConfig = namedtuple("CardConfig", ["id", "desc", "kwargs"])
 
-    card_2 = dbc.Card(
-        [
-            html.H4("", className="card-title", id="requests"),
-            html.P("Requests", className="card-text"),
-        ],
-        body=True,
-        color="dark",
-        inverse=True,
-    )
+    card_configs = [
+        CardConfig("total-requests", "Total Requests", {"color": "primary"}),
+        CardConfig("valid-requests", "Valid Requests", {"color": "success"}),
+        CardConfig("failed-requests", "Failed Requests", {"color": "warning"}),
+        CardConfig("unique-visitors", "Unique Visitors", {"color": "light"}),
+        CardConfig("referrers", "Referrers", {"color": "light"}),
+        CardConfig("not-found", "Not Found", {"color": "light"}),
+    ]
 
-    card_3 = dbc.Card(
-        [
-            html.H4("", className="card-title", id="visitors"),
-            html.P("Unique visitors", className="card-text"),
-        ],
-        body=True,
-        color="primary",
-        inverse=True,
-    )
+    cards = []
+    for card_config in card_configs:
+        card = dbc.Card(
+            [
+                html.H4("", className="card-title", id=card_config.id),
+                html.P(card_config.desc, className="card-text"),
+            ],
+            body=True,
+            **card_config.kwargs,
+        )
 
-    return dbc.Row([dbc.Col(card, md=4) for card in (card_1, card_2, card_3)])
+        cards.append(card)
+
+    return [
+        dbc.Row([dbc.Col(card, md=4) for card in cards[:3]]),
+        html.Br(),
+        dbc.Row([dbc.Col(card, md=4) for card in cards[3:]]),
+    ]
 
 
 def get_graphs():

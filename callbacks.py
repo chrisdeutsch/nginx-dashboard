@@ -1,11 +1,11 @@
 import datetime
 from glob import glob
-from parser import parse_log
 
 import pandas as pd
 import plotly.express as px
 from dash import Input, Output, callback
 
+from parser import parse_log
 from preprocessing import preprocess
 
 

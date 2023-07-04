@@ -14,6 +14,12 @@ pip install -r requirements.txt
 python app.py
 ```
 
+## Docker Image
+
+```bash
+TODO: Put instructions here
+```
+
 ## Limitations
 
 - Currently only support for the default NGINX log format.

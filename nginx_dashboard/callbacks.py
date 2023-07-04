@@ -4,8 +4,8 @@ import pandas as pd
 import plotly.express as px
 from dash import Input, Output, callback
 
-from parser import parse_log
-from preprocessing import preprocess
+from nginx_dashboard.parser import parse_log
+from nginx_dashboard.preprocessing import preprocess
 
 outputs = [
     Output("total-requests", "children"),

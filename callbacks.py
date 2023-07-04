@@ -1,4 +1,3 @@
-import datetime
 from glob import glob
 
 import pandas as pd
@@ -7,7 +6,6 @@ from dash import Input, Output, callback
 
 from parser import parse_log
 from preprocessing import preprocess
-
 
 outputs = [
     Output("total-requests", "children"),

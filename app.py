@@ -5,6 +5,8 @@ from nginx_dashboard.callbacks import register_callbacks
 from nginx_dashboard.layout import get_layout
 
 app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
+
 app.layout = get_layout()
 register_callbacks(app)
 

@@ -14,6 +14,25 @@ pip install -r requirements.txt
 python app.py
 ```
 
+## Docker Compose
+
+`docker-compose.yml`:
+
+```bash
+---
+version: "3"
+services:
+  dashboard:
+    build: .
+    container_name: nginx_dashboard
+    volumes:
+      - /home/chris/swag/config/log/nginx:/app/data:ro
+    environment:
+      - TZ=Europe/Berlin
+    ports:
+      - "10.0.0.1:8000:8000/tcp"
+```
+
 ## Limitations
 
 - Currently only support for the default NGINX log format.

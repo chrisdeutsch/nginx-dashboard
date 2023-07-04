@@ -25,6 +25,7 @@ def get_selector():
             {"label": f"Last {days} days", "value": days} for days in [7, 30, 120]
         ],
         value=7,
+        style={"marginTop": 12},
     )
 
     return dbc.Row(
@@ -79,7 +80,7 @@ def get_graphs():
 
     return dbc.Row(
         [
-            dbc.Col(graph_1, md=6),
-            dbc.Col(graph_2, md=6),
+            dbc.Col(graph_1, xs=12, lg=6),
+            dbc.Col(graph_2, xs=12, lg=6),
         ]
     )
